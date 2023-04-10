@@ -1,6 +1,6 @@
 # Machine-Learning-Pneumonia-Detection-with-Chest-Xray-images-
 This project has been made as a school assignment, with another collegue of mine. He has posted all our notebooks on his page : 
-
+https://github.com/ggleKg/Projet_Detection_Pneumonie
 I have developped a Decision Tree and Random Forest approach, whereas he focused on a Multilayer Perceptron approach, then we both coded the CNN approach,
 which is our best model so far.
 
