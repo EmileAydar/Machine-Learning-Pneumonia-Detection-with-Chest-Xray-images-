@@ -7,6 +7,6 @@ which is our best model so far.
 The dataset of XRay images used in this notebook can be retrieved using this link :
 https://www.kaggle.com/datasets/paultimothymooney/chest-xray-pneumonia
 
-I have also developed a CNN model for a deep-learning approach to this problem.
-You can also find it on my friend's page
+I have also developed MLP and CNN models for a deep-learning approach to this problem.
+
 
