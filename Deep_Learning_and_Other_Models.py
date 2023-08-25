@@ -16,7 +16,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score, precision_score, recall_score
 from keras.callbacks import ReduceLROnPlateau
 import cv2
-
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Dropout
 from keras.preprocessing.image import ImageDataGenerator
