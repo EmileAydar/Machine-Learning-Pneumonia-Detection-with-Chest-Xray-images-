@@ -20,7 +20,6 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Flatten, Dense, Dropout
 from keras.preprocessing.image import ImageDataGenerator
 
-# In[22]:
 
 
 labels = ['PNEUMONIA', 'NORMAL']
