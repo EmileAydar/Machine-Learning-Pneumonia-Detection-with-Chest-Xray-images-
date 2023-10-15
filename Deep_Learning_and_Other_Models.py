@@ -117,17 +117,17 @@ x_test = x_test.reshape(-1, img_size, img_size, 1)
 y_test = np.array(y_test)
 
 datagen = ImageDataGenerator(
-    featurewise_center=False,  # set input mean to 0 over the dataset
-    samplewise_center=False,  # set each sample mean to 0
-    featurewise_std_normalization=False,  # divide inputs by std of the dataset
-    samplewise_std_normalization=False,  # divide each input by its std
-    zca_whitening=False,  # apply ZCA whitening
-    rotation_range=30,  # randomly rotate images in the range (degrees, 0 to 180)
-    zoom_range=0.2,  # Randomly zoom image
-    width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
-    height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
-    horizontal_flip=True,  # randomly flip images
-    vertical_flip=False)  # randomly flip images
+    featurewise_center=False,  
+    samplewise_center=False, 
+    featurewise_std_normalization=False,  
+    samplewise_std_normalization=False,  
+    zca_whitening=False, 
+    rotation_range=30,  
+    zoom_range=0.2,  
+    width_shift_range=0.1, 
+    height_shift_range=0.1,  
+    horizontal_flip=True,
+    vertical_flip=False) 
 
 datagen.fit(x_train)
 
@@ -136,11 +136,11 @@ datagen.fit(x_train)
 
 import matplotlib.pyplot as plt
 
-# Compter les occurrences de chaque classe dans y_train et y_test
+# occurrences de chaque classe dans y_train et y_test
 train_counts = np.bincount(y_train)
 test_counts = np.bincount(y_test)
 
-# Créer le graphique à barres
+# graphique à barres
 fig, ax = plt.subplots()
 ax.bar(['Pneumonie', 'Sain'], train_counts, label='Entraînement')
 ax.bar(['Pneumonie', 'Sain'], test_counts, label='Test', bottom=train_counts)
@@ -149,40 +149,33 @@ ax.set_title('Répartition des classes dans les ensembles d\'entraînement et de
 ax.legend()
 plt.show()
 
-# Définir la taille de la grille
 num_rows = 4  # Nombre de lignes
 num_cols = 4  # Nombre de colonnes
 
-# Créer la figure et les sous-plots
 fig, axes = plt.subplots(num_rows, num_cols, figsize=(12, 12))
-axes = axes.ravel()  # Transformer le tableau d'axes en un tableau à une dimension
+axes = axes.ravel() 
 
-# Parcourir les images du jeu de données et les afficher dans les sous-plots
+
 for i in range(num_rows * num_cols):
-    # Charger l'image à partir de votre jeu de données (remplacez par votre propre logique)
     img = x_train[i * 100]
 
-    # Afficher l'image dans le sous-plot correspondant
-    axes[i].imshow(img, cmap='gray')  # Assurez-vous que cmap='gray' pour les images en niveaux de gris
-    axes[i].axis('off')  # Désactiver les axes
+    axes[i].imshow(img, cmap='gray')  
+    axes[i].axis('off') 
 
-    # Ajouter le titre de l'image (remplacez par le label correspondant dans votre jeu de données)
     if y_train[i * 100] == 0:
         axes[i].set_title('Sain')
     else:
         axes[i].set_title('Pneumonie')
-plt.tight_layout()  # Ajuster la disposition pour éviter les chevauchements
+plt.tight_layout() 
 plt.show()
 
-# Créer un histogramme pour la distribution des pixels dans une image d'exemple (remplacez par votre propre logique)
-img = x_train[0]  # Charger une image d'exemple (remplacez par l'image que vous souhaitez visualiser)
-pixel_values = img.ravel()  # Obtenir les valeurs des pixels dans un tableau à une dimension
+img = x_train[0]
+pixel_values = img.ravel()
 
-# Créer l'histogramme
-plt.hist(pixel_values, bins=256, color='gray')  # Utiliser 256 bins pour représenter les niveaux de gris
-plt.xlabel('Niveau de gris')  # Label de l'axe x
-plt.ylabel('Nombre de pixels')  # Label de l'axe y
-plt.title('Distribution des pixels dans l\'image de radiographie thoracique')  # Titre du graphique
+plt.hist(pixel_values, bins=256, color='gray') 
+plt.xlabel('Niveau de gris') 
+plt.ylabel('Nombre de pixels') 
+plt.title('Distribution des pixels dans l\'image de radiographie thoracique')
 plt.show()
 
 # ## PARTIE 1 :
@@ -254,7 +247,6 @@ plt.show()
 
 ## Modèle MLP 3
 
-# Création d'un modèle MLP simple :
 model = Sequential([
     Flatten(input_shape=(128, 128)),
     Dense(128, activation='relu'),
@@ -263,12 +255,10 @@ model = Sequential([
     Dense(2, activation='sigmoid')  ## Quand on utilise softmax accurancy sur le test desend à 30%
 ])
 
-# Compilation du modèle
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-# Entraînement du modèle
 model.fit(x_train, y_train, epochs=5, validation_data=(x_test, y_test))
 model.evaluate(x_test, y_test)
 
@@ -281,7 +271,6 @@ mlp_metrics = {'Accuracy': accuracy_score(y_test, max_indices),
 
 
 ## Influence du nombre d'epoch pour le modèle MLP 3, meme démarche pour les autres modèle
-# Création d'un modèle MLP simple
 model = Sequential([
     Flatten(input_shape=(128, 128)),
     Dense(128, activation='relu'),
@@ -290,7 +279,6 @@ model = Sequential([
     Dense(2, activation='sigmoid')  ## Quand on utilise softmax accurancy sur le test desend à 30%
 ])
 
-# Compilation du modèle
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
@@ -315,7 +303,6 @@ plt.show()
 
 # Modèle CNN
 
-# Création d'un modèle CNN simple
 model = Sequential([
     Conv2D(32, (3, 3), strides=1, padding='same', activation='relu', input_shape=(128, 128, 1)),
     BatchNormalization(),
@@ -333,12 +320,10 @@ model = Sequential([
     Dense(2, activation='sigmoid')
 ])
 
-# Compilation du modèle
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-# Entraînement du modèle
 model.fit(x_train, y_train, epochs=6, validation_data=(x_test, y_test))
 model.evaluate(x_test, y_test)
 
@@ -359,17 +344,13 @@ cnn_metrics = {'Accuracy': accuracy_score(y_test, max_indices),
 from sklearn.svm import SVC
 import numpy as np
 
-# Aplatir chaque image en une seule dimension
 x_train_flat = np.reshape(x_train, (x_train.shape[0], -1))
 x_test_flat = np.reshape(x_test, (x_test.shape[0], -1))
 
-# Création d'un modèle SVM simple
 model = SVC(kernel='linear', C=3, gamma='scale')
 
-# Entraînement du modèle
 model.fit(x_train_flat, y_train)
 
-# Évaluation du modèle
 score = model.score(x_test_flat, y_test)
 print(f"Accuracy: {score}")
 
@@ -385,13 +366,10 @@ svm_metrics = {'Accuracy': accuracy_score(y_test, max_indices),
 
 from sklearn.linear_model import LogisticRegression
 
-# Création d'un modèle de régression logistique simple
 model = LogisticRegression()
 
-# Entraînement du modèle
 model.fit(x_train_flat, y_train)
 
-# Évaluation du modèle
 score = model.score(x_test_flat, y_test)
 print(f"Accuracy: {score}")
 
@@ -408,16 +386,12 @@ reg_metrics = {'Accuracy': accuracy_score(y_test, max_indices),
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 
-# Création du classifieur Bayésien naïf
 model = GaussianNB()
 
-# Entraînement du modèle
 model.fit(x_train_flat, y_train)
 
-# Prédiction sur l'ensemble de test
 y_pred = model.predict(x_test_flat)
 
-# Calcul de l'accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
 
@@ -432,25 +406,19 @@ bay_metrics = {'Accuracy': accuracy_score(y_test, max_indices),
 
 
 # Bayes améiorer V1
-# Optimisation des hyperparamètres
 
 from sklearn.model_selection import GridSearchCV
 from sklearn.naive_bayes import GaussianNB
 
-# Définition du modèle
 model = GaussianNB()
 
-# Définition des hyperparamètres à optimiser
 param_grid = {'var_smoothing': [1e-9, 1e-8, 1e-7, 1e-6, 1e-5]}
 
-# Recherche par grille des meilleurs hyperparamètres
 grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=5)
 grid_search.fit(x_train_flat, y_train)
 
-# Affichage des meilleurs hyperparamètres
 print(grid_search.best_params_)
 
-# Évaluation du modèle avec les meilleurs hyperparamètres
 score = grid_search.score(x_test_flat, y_test)
 print(f"Accuracy: {score}")
 
@@ -458,25 +426,19 @@ print(f"Accuracy: {score}")
 
 
 # Bayes améiorer V2
-# Rajout d'un pé-traitement par Analyse de Composante Principale
 
 from sklearn.naive_bayes import GaussianNB
 from sklearn.decomposition import PCA
 
-# Création d'un objet PCA pour extraire les caractéristiques
 pca = PCA(n_components=50)
 
-# Application de PCA sur les données d'entraînement et de test
 x_train_pca = pca.fit_transform(x_train_flat)
 x_test_pca = pca.transform(x_test_flat)
 
-# Création d'un objet Classifier de Bayes Naïf
 model = GaussianNB()
 
-# Entraînement du modèle avec les données d'entraînement PCA
 model.fit(x_train_pca, y_train)
 
-# Évaluation du modèle avec les données de test PCA
 score = model.score(x_test_pca, y_test)
 print(f"Accuracy: {score}")
 
@@ -487,13 +449,10 @@ print(f"Accuracy: {score}")
 # avec Analyse par Composante Principale
 
 
-# Création d'un modèle de régression logistique simple
 model = LogisticRegression()
 
-# Entraînement du modèle
 model.fit(x_train_pca, y_train)
 
-# Évaluation du modèle
 score = model.score(x_test_pca, y_test)
 print(f"Accuracy: {score}")
 
@@ -509,21 +468,20 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 
-# Création d'un pipeline pour la régression logistique avec PCA
+# pipeline pour la régression logistique avec PCA
 logistic_pipeline = make_pipeline(StandardScaler(), PCA(), LogisticRegression())
 
-# Définition des hyperparamètres à optimiser
+# hyperparamètres à optimiser
 param_grid = {
     'pca__n_components': [2, 5, 10],
     'logisticregression__penalty': ['l1', 'l2'],
     'logisticregression__C': [0.1, 1, 10]
 }
 
-# Recherche des meilleurs hyperparamètres avec la validation croisée
+# la validation croisée
 grid_search = GridSearchCV(logistic_pipeline, param_grid=param_grid, cv=5)
 grid_search.fit(x_train_flat, y_train)
 
-# Affichage des meilleurs hyperparamètres et de la performance
 print("Meilleurs hyperparamètres : ", grid_search.best_params_)
 print("Performance : ", grid_search.best_score_)
 
@@ -544,13 +502,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
 
-# Création du pipeline pour la régression logistique avec PCA
+# pipeline pour la régression logistique avec PCA
 logistic_pipeline = make_pipeline(StandardScaler(), PCA(n_components=10), LogisticRegression(C=0.1, penalty='l2'))
 
-# Entraînement du modèle
 logistic_pipeline.fit(x_train_flat, y_train)
 
-# Évaluation du modèle
 score = logistic_pipeline.score(x_test_flat, y_test)
 print(f"Accuracy: {score}")
 # Accuracy: 0.7676282051282052
@@ -570,21 +526,17 @@ from sklearn.neighbors import KNeighborsClassifier
 # Création du pipeline avec PCA, KNN et une transformation de distance de Manhattan à Euclidienne
 knn_pipeline = make_pipeline(StandardScaler(), PCA(), KNeighborsClassifier(metric='euclidean'))
 
-# Définition des hyperparamètres à optimiser
 param_grid = {
     'pca__n_components': [2, 5, 10],
     'kneighborsclassifier__n_neighbors': [3, 5, 7, 9],
     'kneighborsclassifier__weights': ['uniform', 'distance']
 }
 
-# Recherche par grille des meilleurs hyperparamètres
 grid_search = GridSearchCV(estimator=knn_pipeline, param_grid=param_grid, cv=5)
 grid_search.fit(x_train_flat, y_train)
 
-# Affichage des meilleurs hyperparamètres
 print(grid_search.best_params_)
 
-# Évaluation du modèle avec les meilleurs hyperparamètres
 score = grid_search.score(x_test_flat, y_test)
 print(f"Accuracy: {score}")
 
@@ -595,7 +547,6 @@ print(f"Accuracy: {score}")
 # avec Analyse par Composante Principale
 
 
-# Création d'un modèle MLP simple
 model = Sequential([
     Dense(128, activation='relu'),
     Dropout(0.1),
@@ -603,12 +554,10 @@ model = Sequential([
     Dense(2, activation='sigmoid')  ## Quand on utilise softmax accurancy sur le test desend à 30%
 ])
 
-# Compilation du modèle
 model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-# Entraînement du modèle
 model.fit(x_train_pca, y_train, epochs=5, validation_data=(x_test_pca, y_test))
 model.evaluate(x_test_pca, y_test)
 
@@ -618,7 +567,6 @@ model.evaluate(x_test_pca, y_test)
 # Graphe bilan
 
 
-# Préparer les données pour le graphique en bâton
 labels = list(mlp_metrics.keys())
 mlp_values = list(mlp_metrics.values())
 cnn_values = list(cnn_metrics.values())
@@ -626,10 +574,9 @@ reg_values = list(reg_metrics.values())
 svm_values = list(svm_metrics.values())
 bay_values = list(bay_metrics.values())
 
-x = np.arange(len(labels))  # localisation des labels sur l'axe des x
-width = 0.1  # largeur des barres
+x = np.arange(len(labels))  
+width = 0.1  
 
-# Créer le graphique en bâton
 fig, ax = plt.subplots(figsize=(10, 6))
 
 rects1 = ax.bar(x - width / 2, mlp_values, width, label='MLP', color='blue')
@@ -638,7 +585,6 @@ rects3 = ax.bar(x + 3 * width / 2, reg_values, width, label='Reg.Log', color='gr
 rects4 = ax.bar(x + 5 * width / 2, svm_values, width, label='SVM', color='red')
 rects5 = ax.bar(x + 7 * width / 2, bay_values, width, label='Bayesien Naif', color='yellow')
 
-# Ajouter du texte pour les labels, titre et légende
 ax.set_ylabel('Valeur des métriques')
 ax.set_title('Comparaison des métriques entre Random Forest et Decision Tree')
 ax.set_xticks(x)
@@ -647,11 +593,6 @@ ax.set_ylim([0, 1])
 ax.legend()
 
 plt.show()
-
-
-
-
-
 
 
 
